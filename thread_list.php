@@ -7,6 +7,8 @@
         if (isset($_SESSION['user_id'])) {
         }elseif (!isset($_SESSION['user_id'])) {
             header('Location: index.php');
+            //認証完了していない場合、index.phpを表示
+            //ログイン無しアクセスを防ぐ
         }
     ?>
 
@@ -141,10 +143,16 @@
 <?php  }  ?>
     </div><!-- <div class="paging"> -->
 
+    <div class="session_footer">
+        <div class="unsubscribe">
+            <a href="unsubscribe.php">退会する場合はこちら</a>
+        </div>
+    </div>
 
 <?php
     }else{
 ?>
+
     <div class="comment">投稿数:0です。新規登録しましょう。良く確認してから投稿を押してね。</div>
     <form action="/bbs/registration.php" method="post"  enctype="multipart/form-data">
         <ul>

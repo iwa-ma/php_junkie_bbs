@@ -1,10 +1,12 @@
 ul {width: 500px;margin: 0 auto;}
+ul.attention{width: 50%;margin: 0 auto;}
 ul li {list-style: none;}
 img.posted {max-width: 300px;max-height: 300px;}
 textarea {resize: none;}
 .login {margin-right: 10px;width:100px;float: left;}
 .new {margin-right: 10px;width:100px;float: left;}
 .session{text-align: center}
+.session_footer{text-align: center;margin-top: 5%;}
 .title{width: 100%;text-align: center;}
 .posted-item-1row{}
 .posted-item-1row:nth-of-type(n+2){margin-left: 3%}
@@ -13,6 +15,7 @@ textarea {resize: none;}
 .posted-conf-item{display: block;}
 .posted-conf-container{width: 50%;border: solid 1px;margin: 0 auto;}
 .comment{text-align: center}
+.comment_attention{}
 .paging{margin-bottom: 2%;margin-top: 0%;width: 100%;overflow: hidden;}
 .paging .pager-next a{float: right;margin-right: 15%;color: #dc3545;font-weight: bold;}
 .paging .pager-back a{float: left;margin-left: 15%;color: #dc3545;font-weight: bold;}

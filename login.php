@@ -16,9 +16,9 @@ $dbname   = $DB_acces['dbname'];
     } else {
         $link->set_charset("utf8");
     }
-       //入力されたe-mailアドレスが登録済みかチェック
+       //入力されたe-mailアドレスが登録済みand有効かチェック
        $link->set_charset('utf8');
-       $user_select_sql = $link->prepare( "SELECT * FROM user where email = ? ");
+       $user_select_sql = $link->prepare( "SELECT * FROM user where email = ? AND status = 1");
        $input_id = $_POST['id'];
        $user_select_sql->bind_param("s",$input_id);
        $user_select_sql->execute();

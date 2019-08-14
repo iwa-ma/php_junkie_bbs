@@ -15,7 +15,7 @@
     } else {
         $link->set_charset("utf8");
 
-        //入力されたe-mailアドレスが登録済みかチェック
+        //入力されたe-mailアドレスが登録済みか、無効になっているかチェック
             $link->set_charset('utf8');
             $user_select_sql = $link->prepare( "SELECT * FROM user where email = ? ");
             $input_id = $_POST['id'];
@@ -23,23 +23,51 @@
             $user_select_sql->execute();
             $result = $user_select_sql->get_result();
             $user_select_all = $result->fetch_all(MYSQLI_ASSOC);
- 
+
+            //登録済みで　有効　false
+
+
             if(count($user_select_all)==0){
+        //未登録の場合
                 $email_check = true;
+                $add_type    = "insert";
             }else{
-                $email_check = false;
+
+            $link->set_charset('utf8');
+            $user_select2_sql = $link->prepare( "SELECT * FROM user where email = ? AND  status= 0 ");
+            $input_id = $_POST['id'];
+            $user_select2_sql->bind_param("s",$input_id);
+            $user_select2_sql->execute();
+            $result = $user_select2_sql->get_result();
+            $user_select2_all = $result->fetch_all(MYSQLI_ASSOC);
+        
+                if (count($user_select2_all)==1) :
+                    //登録済みで無効の場合　
+                    $email_check = true;
+                    $add_type    = "update";
+                else :
+                    //登録済みで有効の場合　
+                    $email_check = false;
+                    $add_type    = false;
+                endif;
             }
     }
 ?>
 
 <?php if($email_check==true){?>
 <?php
-    //登録処理実行
-    $password_text = password_hash($_POST['password1'], PASSWORD_DEFAULT);
-    //postedに追加
-    $user_INSERT_sql = $link->prepare( "INSERT INTO user (no,email,password,status)VALUES (NULL, ? , ? ,'1')");
-    $user_INSERT_sql->bind_param("ss",$_POST['id'],$password_text);
-      switch ($user_INSERT_sql->execute()) {
+    //登録処理実行(事前チェックの結果でupdateかinsertか分岐)
+      $password_text = password_hash($_POST['password1'], PASSWORD_DEFAULT);
+
+       if ($add_type == "insert") :
+            $user_add_sql = $link->prepare( "INSERT INTO user (no,email,password,status)VALUES (NULL, ? , ? ,'1')");
+            $user_add_sql->bind_param("ss",$_POST['id'],$password_text);
+        elseif ($add_type == "update") :
+            $user_add_sql = $link->prepare( "UPDATE `user` SET status= 1,password = ? WHERE email = ?");
+            $user_add_sql->bind_param("ss",$password_text,$_POST['id']);
+        endif;
+
+      switch ($user_add_sql->execute()) {
         case true:
           echo '<div class="comment">登録が完了しました。ログイン画面に戻ってログインして下さい。</div>';
           break;
