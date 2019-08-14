@@ -24,9 +24,6 @@
             $result = $user_select_sql->get_result();
             $user_select_all = $result->fetch_all(MYSQLI_ASSOC);
 
-            //登録済みで　有効　false
-
-
             if(count($user_select_all)==0){
         //未登録の場合
                 $email_check = true;
