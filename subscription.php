@@ -2,17 +2,13 @@
   session_start();
   date_default_timezone_set('Asia/Tokyo');
   require_once('./../base.php');
-  // echo date('Y-m-d H:i:s', 1565848975);
-  // echo '<br>';
-  // echo date('Y-m-d H:i:s', 1565848974);
-  // echo '<br>';
 
   // ログインしてなかったらログインページへ
-  $_SESSION['user_id'] = 1;       // TODO フォームでください
-  // var_dump($_SESSION);
+  $_SESSION['user_id'] = 1;       // TODO フォームからください
   if(!isset($_SESSION['user_id'])) {
     header('Location: ./../login.php');
   }
+
   // user_id(userテーブルのno)からemail(メールアドレス)を取得する
   $host     = $DB_acces['host'];
   $username = $DB_acces['username'];
