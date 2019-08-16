@@ -21,7 +21,6 @@
       unsubscribeUser($DB_acces, $_SESSION['user_id']);
     }
     header('Location: ./../login.php');
-    // header("Location: ./../index.php");
     exit();
   }
 
@@ -75,10 +74,7 @@
             ],
           ],
         ]);
-        // echo '<pre>';
-        // var_dump($subscription);
-        // echo '</pre>';
-        updateSubscription($DB_acces, $_SESSION['user_id'], $amount[$price], $subscription['id'], $subscription['start_date'], $subscription['start']);
+        updateSubscription($DB_acces, $_SESSION['user_id'], $amount[$price], $subscription['id'], $subscription['start_date'], $subscription['current_period_end']);
         header("Location: ./../index.php");
         exit;
       }
@@ -98,10 +94,8 @@
         ],
     ]);
 
-    // testDrawData($product, $plan, $custmer, $subscription);
-
     // キャンセル・変更をするためにDBにsubscription['id']を登録しておく
-    addSubscriptionId($DB_acces, $_SESSION['user_id'], $amount[$price], $subscription['id'], $subscription['start_date'], $subscription['start']);
+    addSubscriptionId($DB_acces, $_SESSION['user_id'], $amount[$price], $subscription['id'], $subscription['start_date'], $subscription['current_period_end']);
 
     // 購入完了画面にリダイレクト
     header("Location: ./../index.php");
@@ -112,9 +106,6 @@
           'charge' => $charge_id,
       ]);
     }
-
-    // testDrawData($product, $plan, $custmer, $subscription);
-    // addSubscriptionId("156465465");
 
     // エラーの表示
     echo "ERORR:" . $e->getMessage();
@@ -144,11 +135,8 @@
       $stmt->bind_param("isssi", $p, $i, $sd, $ud, $u_id);
       $p = $plan;
       $i = $id;
-      $sd = date('Y-m-d');
-      // $st = $start_date == "" ? date('Y-m-t') : null;
-      $_SESSION['test0'] = $sd;
+      $sd = date('Y-m-d', $start_date);
       $ud = date('Y-m-d', $update_date);
-      $_SESSION['test1'] = $ud;
       $u_id = $user_id;
 
       $stmt->execute();
@@ -177,11 +165,9 @@
       $stmt->bind_param("isssi", $p, $i, $sd, $ud, $u_id);
       $p = $plan;
       $i = $subscription_id;
-      $sd = date('Y-m-d');
-      $_SESSION['test0'] = $sd;
+      $sd = date('Y-m-d', $start_date);
       $ud = date('Y-m-d', $update_date);
       $u_id = $user_id;
-      $_SESSION['test1'] = $ud;
       $stmt->execute();
       $stmt->close();
     } else {
